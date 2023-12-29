@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <title>Document</title>
+    <link rel="stylesheet" href="/LandingPage.css">
+</head>
+<body>
+
+    <div class="navbar">
+            <div class="logo-container">
+                <img src="/logo.png" alt="">
+            </div>
+            <div style="width: 100%">
+            <div class="NAVBAR search-bar">
+                
+                <input placeholder="search for task" type="text">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search-heart" viewBox="0 0 16 16">
+                    <path d="M6.5 4.482c1.664-1.673 5.825 1.254 0 5.018-5.825-3.764-1.664-6.69 0-5.018Z"/>
+                    <path d="M13 6.5a6.471 6.471 0 0 1-1.258 3.844c.04.03.078.062.115.098l3.85 3.85a1 1 0 0 1-1.414 1.415l-3.85-3.85a1.007 1.007 0 0 1-.1-.115h.002A6.5 6.5 0 1 1 13 6.5ZM6.5 12a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11Z"/>
+                  </svg>
+            </div>
+            <div class="choosen NAVBAR home">
+                <h3>HOME</h3>
+            </div>
+            <div class="NAVBAR favourites">
+                <h3>FAVOURITES</h3>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right-circle-fill" viewBox="0 0 16 16">
+                    <path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0zM4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H4.5z"/>
+                  </svg>
+            </div>
+            <div class="NAVBAR projects">
+                <h3>PROJECTS</h3>
+                <svg id="openProjects" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right-circle-fill" viewBox="0 0 16 16">
+                    <path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0zM4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H4.5z"/>
+                  </svg>
+                
+            </div>
+
+            <div class="quote-of-the-day">
+                <section id="quotation">
+                </section>
+            </div>
+            </div>
+    </div>
+
+
+    <script>
+        const API_ENDPOINT = "https://type.fit/api/quotes";
+        let quotes = [];
+
+        const init = async () => {
+        try {
+            const jsonRes = await fetch(API_ENDPOINT);
+            quotes = await jsonRes.json();
+            setMarkup();
+        } catch (error) {
+            quotation.innerHTML = error.message;
+        }
+        };
+
+        const randomIndexGenerator = (len) => {
+        return Math.floor(Math.random() * (len + 1));
+        };
+
+        init();
+
+        const setMarkup = () => {
+        const { text, author } = quotes[randomIndexGenerator(quotes.length)];
+        quotation.innerHTML = `
+                <span class="quote">${text}</span>  
+                <div class="footer">
+                    <span id="refresh" title="Refresh | click R">
+                        <i class="fas fa-sync"></i>
+                    </span>
+                </div>
+            `;
+        refresh.addEventListener("click", () => {
+            setMarkup();
+        });
+        };
+
+        document.onkeypress = (e) => {
+        if (e.key === "r" || e.key === "R") setMarkup();
+        };
+    </script>
+
+</body>
+</html>
